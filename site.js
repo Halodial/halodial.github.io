@@ -61,6 +61,14 @@
     if (Sound.on) Sound.play('click');
   });
 
+  // copy buttons for the install commands
+  document.querySelectorAll('.copy').forEach(b => b.addEventListener('click', async () => {
+    const text = document.getElementById(b.dataset.copy).textContent;
+    try { await navigator.clipboard.writeText(text); b.textContent = 'Copied'; }
+    catch { getSelection().selectAllChildren(document.getElementById(b.dataset.copy)); b.textContent = 'Press ⌘C'; }
+    setTimeout(() => { b.textContent = 'Copy'; }, 1800);
+  }));
+
   // features
   const features = [
     ['corner-up-left', 'Undo, every time', 'Each result comes with Undo. New files go to the Trash, moved files go back where they were.'],

@@ -46,7 +46,7 @@
           <a class="btn" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14"/></svg>Download for Mac</a>
           <a class="btn ghost" href="#try">Try the dial</a>
         </div>
-        <p class="meta">Version 1.0 · Free during early access · Apple silicon</p>
+        <p class="meta">Free during early access · Apple silicon · macOS 14+</p>
       </div>
 
       <div id="try">
@@ -174,22 +174,33 @@
     <div class="wrap">
       <div>
         <img class="icon" src="assets/icon-256.png" alt="Halodial app icon">
-        <span class="eyebrow">Halodial 1.0</span>
-        <h2 style="margin-top:14px">Free during early access.</h2>
-        <p class="lede" style="margin-top:16px">For Macs with Apple silicon running macOS 14 Sonoma or later. Halodial keeps itself up to date.</p>
+        <span class="eyebrow">Download</span>
+        <h2 style="margin-top:14px" id="download-options">Free during early access.</h2>
+        <p class="lede" style="margin-top:16px">For Macs with Apple silicon running macOS 14 Sonoma or later. Halodial keeps itself up to date. The one-line install skips the macOS approval step.</p>
         <div class="cta">
-          <a class="btn" href="https://github.com/Halodial/releases/releases/latest/download/Halodial.dmg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14"/></svg>Download Halodial</a>
+          <a class="btn" href="https://github.com/Halodial/releases/releases/latest/download/Halodial.dmg" id="dl-main"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14"/></svg>Download .dmg</a>
           <a class="btn ghost" href="https://github.com/Halodial/releases/releases">All versions</a>
         </div>
       </div>
-      <div>
-        <h3 style="margin-bottom:18px">Installing, the first time</h3>
-        <ol class="steps">
-          <li><b>Drag Halodial to Applications</b><span>Open the downloaded file and drag the Halodial icon onto the Applications folder.</span></li>
-          <li><b>Open it once</b><span>macOS says Apple could not verify Halodial, because Halodial isn't notarized by Apple yet. Click Done.</span></li>
-          <li><b>Choose Open Anyway</b><span>In System Settings, open Privacy &amp; Security, scroll down and click Open Anyway next to Halodial, then confirm. You only do this once. Prefer Terminal? <code>xattr -dr com.apple.quarantine /Applications/Halodial.app</code> does the same.</span></li>
-          <li><b>Say hello</b><span>A short welcome shows the three ways in. After that Halodial waits in the menu bar, and updates arrive by themselves.</span></li>
-        </ol>
+      <div class="ways-in">
+        <div class="opt">
+          <div class="opt-head"><h3>Install with one line</h3><span class="tag">No prompts</span></div>
+          <p>Paste this into Terminal. It downloads Halodial, checks its signature, puts it in Applications and opens it, with nothing to approve.</p>
+          <div class="cmd"><code id="cmd-curl">curl -fsSL https://halodial.github.io/install.sh | sh</code><button type="button" class="copy" data-copy="cmd-curl">Copy</button></div>
+        </div>
+        <div class="opt">
+          <div class="opt-head"><h3>Or with Homebrew</h3><span class="tag">No prompts</span></div>
+          <div class="cmd"><code id="cmd-brew">brew tap halodial/tap &amp;&amp; brew trust halodial/tap &amp;&amp; brew install --cask halodial</code><button type="button" class="copy" data-copy="cmd-brew">Copy</button></div>
+        </div>
+        <details class="opt">
+          <summary><h3>Or download the disk image</h3><span class="more">One approval in System Settings</span></summary>
+          <ol class="steps">
+            <li><b>Drag Halodial to Applications</b><span>Open Halodial.dmg and drag the Halodial icon onto the Applications folder.</span></li>
+            <li><b>Open it once</b><span>macOS says Apple could not verify Halodial, because Halodial isn't notarized by Apple yet. Click Done.</span></li>
+            <li><b>Choose Open Anyway</b><span>In System Settings, open Privacy &amp; Security, scroll down and click Open Anyway next to Halodial, then confirm. You only do this once.</span></li>
+          </ol>
+        </details>
+        <p class="after">Whichever way you choose, a short welcome shows the three ways in. Halodial then waits in the menu bar (and in the Dock, if you turn that on), and updates arrive by themselves.</p>
       </div>
     </div>
   </section>
