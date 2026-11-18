@@ -186,8 +186,8 @@
         <h3 style="margin-bottom:18px">Installing, the first time</h3>
         <ol class="steps">
           <li><b>Drag Halodial to Applications</b><span>Open the downloaded file and drag the Halodial icon onto the Applications folder.</span></li>
-          <li><b>Open it once</b><span>macOS says it can't check Halodial for malicious software, because Halodial isn't notarized by Apple yet. Click Done.</span></li>
-          <li><b>Choose Open Anyway</b><span>In System Settings, open Privacy &amp; Security, scroll down and click Open Anyway next to Halodial, then confirm. You only do this once.</span></li>
+          <li><b>Open it once</b><span>macOS says Apple could not verify Halodial, because Halodial isn't notarized by Apple yet. Click Done.</span></li>
+          <li><b>Choose Open Anyway</b><span>In System Settings, open Privacy &amp; Security, scroll down and click Open Anyway next to Halodial, then confirm. You only do this once. Prefer Terminal? <code>xattr -dr com.apple.quarantine /Applications/Halodial.app</code> does the same.</span></li>
           <li><b>Say hello</b><span>A short welcome shows the three ways in. After that Halodial waits in the menu bar, and updates arrive by themselves.</span></li>
         </ol>
       </div>
