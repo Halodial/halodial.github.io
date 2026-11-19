@@ -59,36 +59,64 @@ export default function Motion() {
       }
     });
 
-    // magnetic buttons, for a mouse or trackpad only: near a big button the cursor disappears and the button becomes
-    // it (its centre glides onto the pointer and follows it; a click still lands on it). Move far enough away and it
-    // lets go: the button springs home and the cursor comes back.
+    // big buttons and a blob cursor, for a mouse or trackpad only. Near a big button the cursor turns into a blob
+    // that follows the pointer (stretching as it moves) and the button leans a few pixels towards it. Over the button
+    // the blob swells into the button's shape and melts onto it; leaving, it pulls back into a dot and shrinks away,
+    // and the normal cursor returns.
     gsap.matchMedia().add('(pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
-      const REACH = 60;  // px round the button's resting place where it holds on
-      let held: HTMLElement | null = null;
+      const REACH = 70, LEAN = 0.12, MAX = 8, DOT = 18;  // zone round a button (px), how far it leans, at most (px), blob size
       const root = document.documentElement;
-      const release = () => {
-        if (!held) return;
-        gsap.to(held, { x: 0, y: 0, scale: 1, duration: 1, ease: 'elastic.out(1, .35)', overwrite: 'auto' });
-        held = null;
-        root.classList.remove('cursor-is-button');
+      const blob = document.createElement('div');
+      blob.className = 'blob';
+      document.body.appendChild(blob);
+      gsap.set(blob, { xPercent: -50, yPercent: -50, width: DOT, height: DOT, scale: 0, opacity: 0 });
+      const toX = gsap.quickTo(blob, 'x', { duration: 0.28, ease: 'power3.out' });
+      const toY = gsap.quickTo(blob, 'y', { duration: 0.28, ease: 'power3.out' });
+      let near: HTMLElement | null = null, inside = false, last = { x: 0, y: 0, t: 0 };
+
+      const leave = () => {
+        if (near) gsap.to(near, { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, .4)', overwrite: 'auto' });
+        near = null; inside = false;
+        root.classList.remove('cursor-is-blob');
+        gsap.to(blob, { scale: 0, opacity: 0, width: DOT, height: DOT, borderRadius: DOT, duration: 0.35, ease: 'power3.in', overwrite: 'auto' });
       };
       const onMove = (e: PointerEvent) => {
-        let hit: { b: HTMLElement; dx: number; dy: number } | null = null;
-        document.querySelectorAll<HTMLElement>('.btn:not(.small)').forEach(b => {
-          if (hit) return;
-          const r = b.getBoundingClientRect();
-          const cx = r.left + r.width / 2 - (gsap.getProperty(b, 'x') as number), cy = r.top + r.height / 2 - (gsap.getProperty(b, 'y') as number);
-          const dx = e.clientX - cx, dy = e.clientY - cy;
-          if (Math.abs(dx) < r.width / 2 + REACH && Math.abs(dy) < r.height / 2 + REACH) hit = { b, dx, dy };
+        let hit: HTMLElement | null = null, rest = { x: 0, y: 0, w: 0, h: 0 };
+        for (const b of document.querySelectorAll<HTMLElement>('.btn:not(.small)')) {
+          const r = b.getBoundingClientRect(), bx = gsap.getProperty(b, 'x') as number, by = gsap.getProperty(b, 'y') as number;
+          const cx = r.left + r.width / 2 - bx, cy = r.top + r.height / 2 - by;
+          if (Math.abs(e.clientX - cx) < r.width / 2 + REACH && Math.abs(e.clientY - cy) < r.height / 2 + REACH) { hit = b; rest = { x: cx, y: cy, w: r.width, h: r.height }; break; }
+        }
+        if (!hit) { if (near) leave(); return; }
+        if (near && near !== hit) leave();
+        if (!near) { near = hit; root.classList.add('cursor-is-blob'); gsap.set(blob, { x: e.clientX, y: e.clientY }); }
+
+        // the button leans a little towards the pointer
+        const dx = e.clientX - rest.x, dy = e.clientY - rest.y;
+        gsap.to(hit, { x: gsap.utils.clamp(-MAX, MAX, dx * LEAN), y: gsap.utils.clamp(-MAX, MAX, dy * LEAN), duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
+
+        const over = Math.abs(dx) < rest.w / 2 && Math.abs(dy) < rest.h / 2;
+        if (over) {  // swell into the button and settle on it
+          const r = hit.getBoundingClientRect();
+          inside = true;
+          toX(r.left + r.width / 2); toY(r.top + r.height / 2);
+          gsap.to(blob, { width: r.width + 10, height: r.height + 10, borderRadius: r.height, scale: 1, opacity: 1, rotation: 0, scaleX: 1, scaleY: 1, duration: 0.45, ease: 'elastic.out(1, .6)', overwrite: 'auto' });
+          return;
+        }
+        // outside it: a dot that follows the pointer, stretched along its movement
+        const t = performance.now(), vx = e.clientX - last.x, vy = e.clientY - last.y, dt = Math.max(16, t - last.t);
+        last = { x: e.clientX, y: e.clientY, t };
+        const speed = Math.min(1, Math.hypot(vx, vy) / dt / 2.5);
+        toX(e.clientX); toY(e.clientY);
+        gsap.to(blob, {
+          width: DOT, height: DOT, borderRadius: DOT, scale: 1, opacity: 1, rotation: Math.atan2(vy, vx) * 180 / Math.PI,
+          scaleX: 1 + speed * 0.6, scaleY: 1 - speed * 0.3, duration: inside ? 0.4 : 0.25, ease: 'power3.out', overwrite: 'auto',
         });
-        if (!hit) return release();
-        const { b, dx, dy } = hit as { b: HTMLElement; dx: number; dy: number };
-        if (held !== b) { release(); held = b; root.classList.add('cursor-is-button'); }
-        gsap.to(b, { x: dx, y: dy, scale: 1.06, duration: 0.35, ease: 'power3.out', overwrite: 'auto' });
+        inside = false;
       };
       addEventListener('pointermove', onMove);
-      document.addEventListener('pointerleave', release);
-      return () => { release(); removeEventListener('pointermove', onMove); document.removeEventListener('pointerleave', release); };
+      document.addEventListener('pointerleave', leave);
+      return () => { leave(); blob.remove(); removeEventListener('pointermove', onMove); document.removeEventListener('pointerleave', leave); };
     });
   });
   return null;

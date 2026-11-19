@@ -53,8 +53,9 @@ kbd {
 .btn:hover { transform: translateY(-1px); background: #fff; }
 .btn.ghost { background: var(--raised); color: var(--ink); }
 .btn.ghost:hover { background: #2C2C2C; }
-/* while a big button has become the cursor, the real cursor hides */
-html.cursor-is-button, html.cursor-is-button * { cursor: none !important; }
+/* near a big button the cursor is a blob (see Motion.tsx); the real cursor hides meanwhile */
+html.cursor-is-blob, html.cursor-is-blob * { cursor: none !important; }
+.blob { position: fixed; left: 0; top: 0; z-index: 100; pointer-events: none; background: #fff; mix-blend-mode: difference; will-change: transform, width, height; }
 .btn.small { height: 36px; padding: 0 16px; font-size: 13.5px; }
 .cta { display: flex; flex-wrap: wrap; gap: 12px; }
 .hero .cta { justify-content: center; }
