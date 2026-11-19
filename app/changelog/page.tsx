@@ -9,6 +9,7 @@ const RELEASE_LIST: [version: string, date: string, items: string[]][] = [
   ['1.0.3', '20 November 2026', [
     'Fixed: the dial click sound going quiet when you connect earbuds, headphones or AirPlay, or switch the sound output.',
     'New icons across the dial: Mission Control, Desktop, Display Off, Night Shift, keyboard light, Dark Mode, Screenshot, AirDrop, earbuds and more.',
+    'Music: Play and Pause are one button that shows what it will do.',
     'Clearer names in the Edit ring: Open editor for images, Open in Preview for PDFs.',
   ]],
   ['1.0.2', '19 November 2026', ['Fixed: the dial click sound stopping after the Mac sleeps or the sound output changes.']],
