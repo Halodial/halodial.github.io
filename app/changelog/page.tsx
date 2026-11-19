@@ -6,6 +6,11 @@ export const metadata: Metadata = { title: "What's new", description: 'Every Hal
 
 // Newest first. Matches the release notes on GitHub (Halodial/releases).
 const RELEASE_LIST: [version: string, date: string, items: string[]][] = [
+  ['1.0.3', '20 November 2026', [
+    'Fixed: the dial click sound going quiet when you connect earbuds, headphones or AirPlay, or switch the sound output.',
+    'New icons across the dial: Mission Control, Desktop, Display Off, Night Shift, keyboard light, Dark Mode, Screenshot, AirDrop, earbuds and more.',
+    'Clearer names in the Edit ring: Open editor for images, Open in Preview for PDFs.',
+  ]],
   ['1.0.2', '19 November 2026', ['Fixed: the dial click sound stopping after the Mac sleeps or the sound output changes.']],
   ['1.0.1', '19 November 2026', ['Show Halodial in the Dock too, if you like (Settings > General). Clicking the Dock icon opens Settings.']],
   ['1.0.0', '18 November 2026', [
