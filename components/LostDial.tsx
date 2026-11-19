@@ -54,6 +54,9 @@ export default function LostDial() {
 
   return (
     <div className="lost-dial" ref={root}>
+      <svg className="orbits" viewBox="-630 -630 1260 1260" aria-hidden="true">
+        {[190, 240, 300, 370, 450, 540].map(r => <circle key={r} r={r} />)}
+      </svg>
       <svg className="lost-ring" viewBox="-210 -210 420 420" aria-hidden="true">
         <defs><linearGradient id="lost-iris" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#C9B6FF" /><stop offset=".5" stopColor="#7FC8FF" /><stop offset="1" stopColor="#8FE3A2" /></linearGradient></defs>
         <circle className="lost-halo" r="166" fill="none" stroke="url(#lost-iris)" strokeWidth="1.6" pathLength={1} strokeDasharray="1 1" transform="rotate(-90)" />

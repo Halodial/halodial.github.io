@@ -435,14 +435,14 @@ h1 { font-size: clamp(40px, min(6.4vw, 9.6vh), 92px); line-height: 1.02; letter-
 .veil .logo { opacity: .9; }
 
 /* 404 */
-.lost { min-height: 100vh; display: grid; align-items: center; padding-block: calc(110px + env(safe-area-inset-top, 0px)) 80px; }
+.lost { min-height: 100vh; overflow: clip; display: grid; align-items: center; padding-block: calc(110px + env(safe-area-inset-top, 0px)) 80px; }
 .lost-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
 .lost-copy { display: grid; gap: 24px; }
 .lost-links { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .lost-links a { display: inline-block; padding: 8px 14px; border-radius: 999px; background: var(--raised); text-decoration: none; font-size: 14.5px; font-weight: 500; transition: background .2s; }
 .lost-links a:hover { background: #2C2C2C; }
-.lost-dial { position: relative; width: min(480px, 100%); aspect-ratio: 1; justify-self: center; }
-.lost-dial::before { content: ""; position: absolute; inset: -20%; border-radius: 50%; background: radial-gradient(closest-side, rgba(127, 200, 255, .08), transparent); }
+.lost-dial { position: relative; isolation: isolate; width: min(480px, 100%); aspect-ratio: 1; justify-self: center; }
+.lost-dial::before { content: ""; position: absolute; z-index: -1; inset: -20%; border-radius: 50%; background: radial-gradient(closest-side, rgba(127, 200, 255, .08), transparent); }
 .lost-ring, .lost-hit, .lost-hit .dial { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .lost-hit { cursor: pointer; border-radius: 50%; }
 .lost-hit:focus-visible { outline: 2px solid var(--sky); outline-offset: 6px; }
