@@ -59,26 +59,36 @@ export default function Motion() {
       }
     });
 
-    // magnetic buttons, for a mouse or trackpad only: near a big button it slides to meet the pointer and follows
-    // it, so the pointer sits inside it; pull far enough away and it lets go and springs back
+    // magnetic buttons, for a mouse or trackpad only: near a big button the cursor disappears and the button becomes
+    // it (its centre glides onto the pointer and follows it; a click still lands on it). Move far enough away and it
+    // lets go: the button springs home and the cursor comes back.
     gsap.matchMedia().add('(pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
-      const REACH = 70, PULL = 0.45;  // px of pull zone round each button; how far it follows (share of the distance)
-      const held = new Set<HTMLElement>();
+      const REACH = 60;  // px round the button's resting place where it holds on
+      let held: HTMLElement | null = null;
+      const root = document.documentElement;
+      const release = () => {
+        if (!held) return;
+        gsap.to(held, { x: 0, y: 0, scale: 1, duration: 1, ease: 'elastic.out(1, .35)', overwrite: 'auto' });
+        held = null;
+        root.classList.remove('cursor-is-button');
+      };
       const onMove = (e: PointerEvent) => {
+        let hit: { b: HTMLElement; dx: number; dy: number } | null = null;
         document.querySelectorAll<HTMLElement>('.btn:not(.small)').forEach(b => {
+          if (hit) return;
           const r = b.getBoundingClientRect();
           const cx = r.left + r.width / 2 - (gsap.getProperty(b, 'x') as number), cy = r.top + r.height / 2 - (gsap.getProperty(b, 'y') as number);
           const dx = e.clientX - cx, dy = e.clientY - cy;
-          if (Math.abs(dx) < r.width / 2 + REACH && Math.abs(dy) < r.height / 2 + REACH) {
-            held.add(b);
-            gsap.to(b, { x: dx * PULL, y: dy * PULL, duration: 0.45, ease: 'power3.out', overwrite: 'auto' });
-          } else if (held.delete(b)) {
-            gsap.to(b, { x: 0, y: 0, duration: 1, ease: 'elastic.out(1, .32)', overwrite: 'auto' });
-          }
+          if (Math.abs(dx) < r.width / 2 + REACH && Math.abs(dy) < r.height / 2 + REACH) hit = { b, dx, dy };
         });
+        if (!hit) return release();
+        const { b, dx, dy } = hit as { b: HTMLElement; dx: number; dy: number };
+        if (held !== b) { release(); held = b; root.classList.add('cursor-is-button'); }
+        gsap.to(b, { x: dx, y: dy, scale: 1.06, duration: 0.35, ease: 'power3.out', overwrite: 'auto' });
       };
       addEventListener('pointermove', onMove);
-      return () => removeEventListener('pointermove', onMove);
+      document.addEventListener('pointerleave', release);
+      return () => { release(); removeEventListener('pointermove', onMove); document.removeEventListener('pointerleave', release); };
     });
   });
   return null;

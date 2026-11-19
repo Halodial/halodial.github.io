@@ -53,6 +53,8 @@ kbd {
 .btn:hover { transform: translateY(-1px); background: #fff; }
 .btn.ghost { background: var(--raised); color: var(--ink); }
 .btn.ghost:hover { background: #2C2C2C; }
+/* while a big button has become the cursor, the real cursor hides */
+html.cursor-is-button, html.cursor-is-button * { cursor: none !important; }
 .btn.small { height: 36px; padding: 0 16px; font-size: 13.5px; }
 .cta { display: flex; flex-wrap: wrap; gap: 12px; }
 .hero .cta { justify-content: center; }
