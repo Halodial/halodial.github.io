@@ -142,6 +142,11 @@ h1 { font-size: clamp(40px, min(6.4vw, 9.6vh), 92px); line-height: 1.02; letter-
 .result-icon { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--iris); color: var(--void); }
 .undo { color: var(--ink); font-weight: 500; padding-left: 12px; border-left: 1px solid var(--line-strong); }
 
+/* the ocean photo, wherever a file shows a picture */
+.photo-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.crop-photo { border: 2px solid #fff; }
+.print.p3 { overflow: hidden; }
+
 /* ---------- the dial (shared by the hero and the scenes) ---------- */
 .dial-disc { fill: #151515; }
 .tile > path { fill: #1C1D21; transition: fill .25s, stroke .25s; stroke: transparent; }
@@ -378,7 +383,8 @@ h1 { font-size: clamp(40px, min(6.4vw, 9.6vh), 92px); line-height: 1.02; letter-
 /* before and after */
 .ba { display: grid; gap: 18px; }
 .ba-frame { position: relative; aspect-ratio: 16 / 10; border-radius: 26px; overflow: hidden; cursor: ew-resize; touch-action: none; border: 1px solid var(--line); user-select: none; }
-.ba-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+.ba-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; transform-origin: 52% 66%; transition: transform .7s cubic-bezier(.2, .8, .2, 1); }
+.ba-frame.zoomed img { transform: scale(3); }  /* the ridges and haze, where compression shows first */
 .ba-after { position: absolute; inset: 0; }
 .ba-line { position: absolute; top: 0; bottom: 0; width: 2px; translate: -1px 0; background: #fff; box-shadow: 0 0 18px rgba(255, 255, 255, .6); pointer-events: none; }
 .ba-knob { position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; translate: -50% -50%; border-radius: 50%; background: #fff; box-shadow: 0 8px 24px rgba(0, 0, 0, .4); }

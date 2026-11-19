@@ -24,7 +24,7 @@ export default function TryCard() {
         <div className="mini-desk">
           <div className="menubar"><b>Finder</b><span>File</span><span>Edit</span><span>View</span><span className="menubar-end"><Logo size={11} /><span>9:41</span></span></div>
           <Dial slots={FOUR} lit={1} name="Convert" sub="Click or hold to open" />
-          <span className="mini-drag"><span className="mini-photo"><span className="sun" /><span className="hill" /></span>
+          <span className="mini-drag"><span className="mini-photo"><img className="photo-img" src="/assets/ocean-thumb.webp" alt="" /></span>
             <svg className="cursor" viewBox="0 0 24 24"><path d="M5 3l14 8.5-6.2 1.4L10 19z" /></svg></span>
           <span className="mini-icons"><FileIcon name="report.pdf" size={34} /><FileIcon name="song.mp3" size={34} /><FileIcon name="budget.xlsx" size={34} /></span>
           <span className="mini-shelf"><span className="mini-shelf-stack"><FileIcon name="clip.mp4" size={30} /><FileIcon name="essay.docx" size={30} /></span><span>2 files</span></span>

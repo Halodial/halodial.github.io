@@ -156,7 +156,7 @@ export default function HeroDial() {
       <Dial className="ring-b" slots={FORMAT_RING} lit={2} name="Convert" sub="Pick an option" />
 
       <div className="file" aria-hidden="true">
-        <div className="file-thumb"><span className="sun" /><span className="hill" /></div>
+        <div className="file-thumb"><img className="photo-img" src="/assets/ocean-thumb.webp" alt="" /></div>
         <span className="file-name">photo.heic</span>
         <svg className="cursor" viewBox="0 0 24 24"><path d="M5 3l14 8.5-6.2 1.4L10 19z" /></svg>
       </div>

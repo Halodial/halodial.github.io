@@ -20,7 +20,7 @@ const ART: Record<string, React.ReactNode> = {
   ),
   'An editor when you need one': (
     <div className="art-crop">
-      <span className="crop-photo"><span className="sun" /><span className="hill" /></span>
+      <span className="crop-photo"><img className="photo-img" src="/assets/ocean-thumb.webp" alt="" /></span>
       <span className="crop-frame"><i /><i /><i /><i /></span>
       <span className="crop-ratios"><b>1:1</b><span>4:5</span><span>16:9</span></span>
     </div>
