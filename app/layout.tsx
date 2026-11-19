@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import { Onest, Unbounded } from 'next/font/google';
 import SmoothScroll from '@/components/SmoothScroll';
+import Motion from '@/components/Motion';
+import Nav from '@/components/Nav';
+import Footer from '@/components/Footer';
 import './globals.css';
 
 const display = Unbounded({ subsets: ['latin'], weight: ['300', '400', '500'], variable: '--font-display' });
@@ -10,11 +13,11 @@ const description = 'A dial that opens under your pointer. Drag a file, hold ⌘
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://halodial.github.io'),
-  title: 'Halodial',
+  title: { default: 'Halodial', template: '%s · Halodial' },
   description,
   icons: { icon: '/assets/favicon.svg', apple: '/assets/icon-256.png' },
   openGraph: {
-    title: 'Halodial',
+    title: { default: 'Halodial', template: '%s · Halodial' },
     description: 'Everything you do with a file, one flick away. A dial for your Mac that opens under your pointer.',
     images: '/assets/og.png',
     url: '/',
@@ -29,7 +32,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body>
         <SmoothScroll />
-        {children}
+        <a className="skip" href="#main">Skip to content</a>
+        <Nav />
+        <main id="main">{children}</main>
+        <Footer />
+        <Motion />
       </body>
     </html>
   );

@@ -4,6 +4,7 @@ import type { NextConfig } from 'next';
 const config: NextConfig = {
   output: 'export',
   images: { unoptimized: true },
+  trailingSlash: true,  // /formats/ is a folder with index.html: works on GitHub Pages and any static server
 };
 
 export default config;
