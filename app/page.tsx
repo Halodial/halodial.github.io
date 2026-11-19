@@ -1,13 +1,13 @@
 import HeroDial from '@/components/HeroDial';
 import WaysIn from '@/components/WaysIn';
-import Dial from '@/components/Dial';
-import FileIcon from '@/components/FileIcon';
+import TryCard from '@/components/TryCard';
+import Bento from '@/components/Bento';
 import Shelf from '@/components/Shelf';
 import PrivateRing from '@/components/PrivateRing';
 import CopyCommand from '@/components/CopyCommand';
-import Icon, { DownloadIcon } from '@/components/Icon';
+import { DownloadIcon } from '@/components/Icon';
 import { DMG, RELEASES } from '@/components/Footer';
-import { ALL_FORMATS, FEATURES } from '@/lib/content';
+import { ALL_FORMATS } from '@/lib/content';
 
 export default function Home() {
   const half = Math.ceil(ALL_FORMATS.length / 2);
@@ -37,50 +37,14 @@ export default function Home() {
 
       <section id="try" className="section">
         <div className="wrap">
-          <a className="try-card" href="/try/">
-            <div className="try-card-copy">
-              <h2 className="section-title" data-split>Try it <span className="soft">before you download.</span></h2>
-              <p className="lede">A pretend Mac desktop in your browser: drag a file, hold <kbd>⌘</kbd>, and the real dial opens under it, sounds and all. Shake a file to get a shelf.</p>
-              <span className="btn">Open the playground</span>
-            </div>
-            <div className="try-card-art" aria-hidden="true">
-              <div className="mini-desk">
-                <div className="menubar"><b>Finder</b><span>File</span><span>Edit</span><span>View</span></div>
-                <Dial slots={[{ label: 'Volume', icon: 'volume' }, { label: 'Music', icon: 'music' }, { label: 'System', icon: 'laptop' }, { label: 'Display', icon: 'monitor' }, { label: 'Safari', icon: 'compass' }]}
-                  lit={0} name="Volume" sub="64%" level={0.64} />
-                <span className="mini-file"><FileIcon name="photo.jpg" size={44} /></span>
-                <span className="mini-file two"><FileIcon name="report.pdf" size={44} /></span>
-              </div>
-            </div>
-          </a>
+          <TryCard />
         </div>
       </section>
 
       <section id="features" className="section">
         <div className="wrap">
           <h2 className="section-title" data-split>Small tools, <span className="soft">kept where your hands are.</span></h2>
-          <ul className="bento" data-rise data-draw>
-            <li className="wide">
-              <div className="bento-art undo-art" aria-hidden="true">
-                <span className="toast-mock faded">Saved photo (1920px).jpg</span>
-                <span className="toast-mock"><Icon name="image" size={16} />Saved photo.webp<b>Undo</b></span>
-              </div>
-              <h3>{FEATURES[0][1]}</h3><p>{FEATURES[0][2]}</p>
-            </li>
-            <li className="wide">
-              <div className="bento-art recipe-art" aria-hidden="true">
-                <span>Resize 1920px</span><i /><span>WebP</span><i /><span className="done">photo.webp</span>
-              </div>
-              <h3>{FEATURES[4][1]}</h3><p>{FEATURES[4][2]}</p>
-            </li>
-            {FEATURES.filter((_, i) => i !== 0 && i !== 4).map(([icon, title, text]) => (
-              <li key={title}>
-                <span className="ledger-icon"><Icon name={icon} /></span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </li>
-            ))}
-          </ul>
+          <Bento />
         </div>
       </section>
 

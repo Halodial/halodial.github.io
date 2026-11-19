@@ -154,7 +154,7 @@ export default function Desktop() {
     last.current = { clientX: e.clientX, clientY: e.clientY };
     const p = where(e);
     if (g.kind === 'stack') setStackAt([p.x, p.y]);
-    else if (!dialAt) setFiles(fs => fs.map(f => (f.id === g.id ? { ...f, x: p.x - g.dx, y: p.y - g.dy } : f)));
+    else setFiles(fs => fs.map(f => (f.id === g.id ? { ...f, x: p.x - g.dx, y: p.y - g.dy } : f)));  // the file follows, over the dial too
 
     // the dial, under the pointer, follows it
     if (g.kind === 'file' && (cmdKey.current || latch || e.metaKey) && !dialAt) openDial(e);
