@@ -4,6 +4,8 @@ import SmoothScroll from '@/components/SmoothScroll';
 import Motion from '@/components/Motion';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import SiteDial from '@/components/SiteDial';
+import Search from '@/components/Search';
 import './globals.css';
 
 // One family: Manrope ExtraBold for headings, Regular to Semibold for everything else.
@@ -25,7 +27,7 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image' },
 };
 
-export const viewport: Viewport = { themeColor: '#050608', viewportFit: 'cover' };
+export const viewport: Viewport = { themeColor: '#111111', viewportFit: 'cover' };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -37,6 +39,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <Footer />
         <Motion />
+        <SiteDial />
+        <Search />
       </body>
     </html>
   );

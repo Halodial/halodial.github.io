@@ -8,7 +8,7 @@ import Logo from './Logo';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const LINKS: [string, string][] = [['/#ways', 'How it works'], ['/try/', 'Try it'], ['/formats/', 'Formats'], ['/help/', 'Help']];
+const LINKS: [string, string][] = [['/try/', 'Try it'], ['/formats/', 'Formats'], ['/recipes/', 'Recipes'], ['/help/', 'Help']];
 
 /** The floating nav. The logo's bright arc turns once round the dial as you scroll the page. */
 export default function Nav() {
@@ -29,6 +29,9 @@ export default function Nav() {
           <a key={href} href={href} aria-current={current !== '/' && href.startsWith(current) ? 'page' : undefined}>{label}</a>
         ))}
       </nav>
+      <button type="button" className="nav-search" onClick={() => dispatchEvent(new Event('open-search'))} aria-label="Search (⌘K)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg><kbd>⌘K</kbd>
+      </button>
       <a className="btn small" href="/#download">Download</a>
     </header>
   );

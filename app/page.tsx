@@ -1,13 +1,15 @@
 import HeroDial from '@/components/HeroDial';
-import WaysIn from '@/components/WaysIn';
 import TryCard from '@/components/TryCard';
-import Bento from '@/components/Bento';
-import Shelf from '@/components/Shelf';
+import SectionHead from '@/components/SectionHead';
+import ProductCards from '@/components/ProductCards';
+import DemoGrid from '@/components/DemoGrid';
+import AppsDiagram from '@/components/AppsDiagram';
+import FileIcon from '@/components/FileIcon';
 import PrivateRing from '@/components/PrivateRing';
 import CopyCommand from '@/components/CopyCommand';
 import { DownloadIcon } from '@/components/Icon';
 import { DMG, RELEASES } from '@/components/Footer';
-import { ALL_FORMATS } from '@/lib/content';
+import { ALL_FORMATS, RECIPES } from '@/lib/content';
 
 export default function Home() {
   const half = Math.ceil(ALL_FORMATS.length / 2);
@@ -29,9 +31,8 @@ export default function Home() {
 
       <section id="ways" className="section">
         <div className="wrap">
-          <h2 className="section-title" data-split>Three ways in. <span className="soft">No windows to open.</span></h2>
-          <p className="lede">Halodial lives in your menu bar and waits. It appears where your pointer already is, and goes away the moment you&apos;ve chosen.</p>
-          <WaysIn />
+          <SectionHead title="Three ways in." soft="No windows to open." href="/try/" link="Try them" />
+          <ProductCards />
         </div>
       </section>
 
@@ -43,33 +44,38 @@ export default function Home() {
 
       <section id="features" className="section">
         <div className="wrap">
-          <h2 className="section-title" data-split>Small tools, <span className="soft">kept where your hands are.</span></h2>
-          <Bento />
+          <SectionHead title="Small tools," soft="kept where your hands are." href="/try/" link="Full playground" />
+          <DemoGrid />
         </div>
       </section>
 
-      <section id="shelf" className="section">
-        <div className="wrap split">
-          <div>
-            <h2 className="section-title" data-split>Somewhere to <span className="soft">put things down.</span></h2>
-            <p className="lede">Moving files between folders, apps and Spaces usually means juggling windows. Shake the file instead, and come back for it when you&apos;re ready.</p>
-            <ul className="points" data-rise>
-              <li>Drop files, links, text and images on it; drag them out one at a time or all together.</li>
-              <li>Name and colour each shelf, keep several open, reopen your last ten.</li>
-              <li>Pin a shelf to the edge of the screen, where it waits as a slim tab.</li>
-              <li>Watch a folder like Downloads, and new files land on a shelf by themselves.</li>
-            </ul>
-          </div>
-          <div className="shelf-art">
-            <Shelf title="Trip photos" />
-            <span className="edge-tab" aria-hidden="true" />
-          </div>
+      <section id="apps" className="section">
+        <div className="wrap">
+          <AppsDiagram />
+        </div>
+      </section>
+
+      <section id="recipes" className="section">
+        <div className="wrap">
+          <SectionHead title="Recipes." soft="Several steps, one choice." href="/recipes/" link="All recipes" />
+          <ul className="recipes three" data-rise>
+            {RECIPES.slice(0, 3).map(r => (
+              <li key={r.name} className="recipe">
+                <div className="recipe-flow" aria-hidden="true">
+                  <span className="rf-file"><FileIcon name={r.file} size={40} /></span>
+                  <span className="rf-steps">{r.steps.map(st => <span key={st} className="rf-step">{st}</span>)}</span>
+                  <span className="rf-file out"><FileIcon name={r.out} size={40} /></span>
+                </div>
+                <div className="recipe-meta"><div><h3>{r.name}</h3><p>{r.text}</p></div></div>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
       <section id="formats" className="section formats-teaser">
         <div className="wrap">
-          <h2 className="section-title" data-split>The formats <span className="soft">you actually use.</span></h2>
+          <SectionHead title="The formats" soft="you actually use." href="/formats/" link="Every format" />
           <p className="lede">Pictures, video, audio, PDFs, documents, spreadsheets, slides and archives. The common ones are on the dial from the start; everything else is one switch away.</p>
         </div>
         <div className="strip" aria-hidden="true">
@@ -79,7 +85,6 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <div className="wrap"><a className="btn ghost" href="/formats/">See every format</a></div>
       </section>
 
       <section className="section private">
