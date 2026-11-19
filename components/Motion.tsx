@@ -59,19 +59,26 @@ export default function Motion() {
       }
     });
 
-    // magnetic buttons, for a mouse or trackpad only
+    // magnetic buttons, for a mouse or trackpad only: near a big button it slides to meet the pointer and follows
+    // it, so the pointer sits inside it; pull far enough away and it lets go and springs back
     gsap.matchMedia().add('(pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
-      const off: (() => void)[] = [];
-      document.querySelectorAll<HTMLElement>('.btn:not(.small)').forEach(b => {
-        const move = (e: PointerEvent) => {
+      const REACH = 70, PULL = 0.45;  // px of pull zone round each button; how far it follows (share of the distance)
+      const held = new Set<HTMLElement>();
+      const onMove = (e: PointerEvent) => {
+        document.querySelectorAll<HTMLElement>('.btn:not(.small)').forEach(b => {
           const r = b.getBoundingClientRect();
-          gsap.to(b, { x: (e.clientX - r.left - r.width / 2) * 0.22, y: (e.clientY - r.top - r.height / 2) * 0.3, duration: 0.4, ease: 'power3.out' });
-        };
-        const leave = () => gsap.to(b, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, .4)' });
-        b.addEventListener('pointermove', move); b.addEventListener('pointerleave', leave);
-        off.push(() => { b.removeEventListener('pointermove', move); b.removeEventListener('pointerleave', leave); });
-      });
-      return () => off.forEach(f => f());
+          const cx = r.left + r.width / 2 - (gsap.getProperty(b, 'x') as number), cy = r.top + r.height / 2 - (gsap.getProperty(b, 'y') as number);
+          const dx = e.clientX - cx, dy = e.clientY - cy;
+          if (Math.abs(dx) < r.width / 2 + REACH && Math.abs(dy) < r.height / 2 + REACH) {
+            held.add(b);
+            gsap.to(b, { x: dx * PULL, y: dy * PULL, duration: 0.45, ease: 'power3.out', overwrite: 'auto' });
+          } else if (held.delete(b)) {
+            gsap.to(b, { x: 0, y: 0, duration: 1, ease: 'elastic.out(1, .32)', overwrite: 'auto' });
+          }
+        });
+      };
+      addEventListener('pointermove', onMove);
+      return () => removeEventListener('pointermove', onMove);
     });
   });
   return null;
