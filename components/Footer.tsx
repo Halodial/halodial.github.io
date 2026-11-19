@@ -12,7 +12,7 @@ export default function Footer() {
           <p>A dial for your Mac that opens under your pointer.</p>
         </div>
         <nav className="footer-cols" aria-label="Footer">
-          <div><h2>Product</h2><a href="/#ways">How it works</a><a href="/#try">Try the dial</a><a href="/formats/">Formats</a><a href="/#download">Download</a></div>
+          <div><h2>Product</h2><a href="/#ways">How it works</a><a href="/try/">Try it</a><a href="/formats/">Formats</a><a href="/#download">Download</a></div>
           <div><h2>Support</h2><a href="/help/">Help</a><a href="/changelog/">What&apos;s new</a><a href={RELEASES}>All versions</a></div>
           <div><h2>About</h2><a href="/privacy/">Privacy</a><a href="https://github.com/Halodial">GitHub</a></div>
         </nav>

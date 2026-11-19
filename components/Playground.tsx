@@ -16,7 +16,7 @@ export default function Playground() {
   const live = useRef<HTMLParagraphElement>(null);
   const dial = useRef<DialApi | null>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const [kind, setKind] = useState('image');
+  const [kind, setKind] = useState('launcher');
   const [style, setStyle] = useState('solid');
   const [accent, setAccent] = useState('#FFFFFF');
   const [sound, setSound] = useState(true);
@@ -59,6 +59,7 @@ export default function Playground() {
       </div>
 
       <div className="play-desk">
+        <svg className="play-orbits" viewBox="-600 -600 1200 1200" aria-hidden="true">{[200, 250, 310, 380, 460, 550].map(r => <circle key={r} r={r} />)}</svg>
         <canvas ref={canvas} tabIndex={0} role="application" aria-describedby="play-help"
           aria-label="Halodial dial. Use the arrow keys to move round it, Return to choose, Escape to go back." />
         <div className={`play-toast${toast ? ' show' : ''}${toast?.undo ? ' undo' : ''}`} role="status" aria-live="polite">

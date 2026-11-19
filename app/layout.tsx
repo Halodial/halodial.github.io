@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from 'next';
-import { Onest, Unbounded } from 'next/font/google';
+import { Manrope } from 'next/font/google';
 import SmoothScroll from '@/components/SmoothScroll';
 import Motion from '@/components/Motion';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import './globals.css';
 
-const display = Unbounded({ subsets: ['latin'], weight: ['300', '400', '500'], variable: '--font-display' });
-const body = Onest({ subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-body' });
+// One family: Manrope ExtraBold for headings, Regular to Semibold for everything else.
+const manrope = Manrope({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], variable: '--font-manrope' });
 
 const description = 'A dial that opens under your pointer. Drag a file, hold ⌘, and convert, edit, share or file it without opening another app. For macOS.';
 
@@ -29,7 +29,7 @@ export const viewport: Viewport = { themeColor: '#050608', viewportFit: 'cover' 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={manrope.variable}>
       <body>
         <SmoothScroll />
         <a className="skip" href="#main">Skip to content</a>

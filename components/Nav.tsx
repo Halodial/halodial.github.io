@@ -8,7 +8,7 @@ import Logo from './Logo';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const LINKS: [string, string][] = [['/#ways', 'How it works'], ['/#try', 'Try it'], ['/formats/', 'Formats'], ['/help/', 'Help']];
+const LINKS: [string, string][] = [['/#ways', 'How it works'], ['/try/', 'Try it'], ['/formats/', 'Formats'], ['/help/', 'Help']];
 
 /** The floating nav. The logo's bright arc turns once round the dial as you scroll the page. */
 export default function Nav() {

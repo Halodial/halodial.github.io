@@ -1,6 +1,7 @@
 import HeroDial from '@/components/HeroDial';
 import WaysIn from '@/components/WaysIn';
-import Playground from '@/components/Playground';
+import Dial from '@/components/Dial';
+import FileIcon from '@/components/FileIcon';
 import Shelf from '@/components/Shelf';
 import PrivateRing from '@/components/PrivateRing';
 import CopyCommand from '@/components/CopyCommand';
@@ -15,11 +16,11 @@ export default function Home() {
       <section className="hero" id="top">
         <div className="hero-copy">
           <p className="hero-kicker">A dial for your Mac</p>
-          <h1>Everything you do with a file, one flick away.</h1>
+          <h1>Everything you do with a file, <span className="soft">one flick away.</span></h1>
           <p className="lede">Halodial opens under your pointer. Drag a file, hold <kbd>⌘</kbd>, and convert, edit, share or file it without opening another app.</p>
           <div className="cta">
             <a className="btn" href={DMG}><DownloadIcon />Download for Mac</a>
-            <a className="btn ghost" href="#try">Try the dial</a>
+            <a className="btn ghost" href="/try/">Try it in your browser</a>
           </div>
           <p className="meta">Free during early access. Apple silicon, macOS 14 or later.</p>
         </div>
@@ -28,29 +29,51 @@ export default function Home() {
 
       <section id="ways" className="section">
         <div className="wrap">
-          <h2 className="section-title" data-split>Three ways in. No windows to open.</h2>
+          <h2 className="section-title" data-split>Three ways in. <span className="soft">No windows to open.</span></h2>
           <p className="lede">Halodial lives in your menu bar and waits. It appears where your pointer already is, and goes away the moment you&apos;ve chosen.</p>
           <WaysIn />
         </div>
       </section>
 
-      <section id="try" className="section try">
+      <section id="try" className="section">
         <div className="wrap">
-          <div className="try-head">
-            <h2 className="section-title" data-split>Try the dial.</h2>
-            <p className="lede">This is the real dial, with the options Halodial gives each kind of file, and the same soft click as you move round it. Pick a file and have a go.</p>
-          </div>
-          <Playground />
+          <a className="try-card" href="/try/">
+            <div className="try-card-copy">
+              <h2 className="section-title" data-split>Try it <span className="soft">before you download.</span></h2>
+              <p className="lede">A pretend Mac desktop in your browser: drag a file, hold <kbd>⌘</kbd>, and the real dial opens under it, sounds and all. Shake a file to get a shelf.</p>
+              <span className="btn">Open the playground</span>
+            </div>
+            <div className="try-card-art" aria-hidden="true">
+              <div className="mini-desk">
+                <div className="menubar"><b>Finder</b><span>File</span><span>Edit</span><span>View</span></div>
+                <Dial slots={[{ label: 'Volume', icon: 'volume' }, { label: 'Music', icon: 'music' }, { label: 'System', icon: 'laptop' }, { label: 'Display', icon: 'monitor' }, { label: 'Safari', icon: 'compass' }]}
+                  lit={0} name="Volume" sub="64%" level={0.64} />
+                <span className="mini-file"><FileIcon name="photo.jpg" size={44} /></span>
+                <span className="mini-file two"><FileIcon name="report.pdf" size={44} /></span>
+              </div>
+            </div>
+          </a>
         </div>
       </section>
 
       <section id="features" className="section">
-        <div className="wrap features">
-          <div className="features-head">
-            <h2 className="section-title" data-split>Small tools, kept where your hands are.</h2>
-          </div>
-          <ul className="ledger" data-rise data-draw>
-            {FEATURES.map(([icon, title, text]) => (
+        <div className="wrap">
+          <h2 className="section-title" data-split>Small tools, <span className="soft">kept where your hands are.</span></h2>
+          <ul className="bento" data-rise data-draw>
+            <li className="wide">
+              <div className="bento-art undo-art" aria-hidden="true">
+                <span className="toast-mock faded">Saved photo (1920px).jpg</span>
+                <span className="toast-mock"><Icon name="image" size={16} />Saved photo.webp<b>Undo</b></span>
+              </div>
+              <h3>{FEATURES[0][1]}</h3><p>{FEATURES[0][2]}</p>
+            </li>
+            <li className="wide">
+              <div className="bento-art recipe-art" aria-hidden="true">
+                <span>Resize 1920px</span><i /><span>WebP</span><i /><span className="done">photo.webp</span>
+              </div>
+              <h3>{FEATURES[4][1]}</h3><p>{FEATURES[4][2]}</p>
+            </li>
+            {FEATURES.filter((_, i) => i !== 0 && i !== 4).map(([icon, title, text]) => (
               <li key={title}>
                 <span className="ledger-icon"><Icon name={icon} /></span>
                 <h3>{title}</h3>
@@ -64,7 +87,7 @@ export default function Home() {
       <section id="shelf" className="section">
         <div className="wrap split">
           <div>
-            <h2 className="section-title" data-split>Somewhere to put things down.</h2>
+            <h2 className="section-title" data-split>Somewhere to <span className="soft">put things down.</span></h2>
             <p className="lede">Moving files between folders, apps and Spaces usually means juggling windows. Shake the file instead, and come back for it when you&apos;re ready.</p>
             <ul className="points" data-rise>
               <li>Drop files, links, text and images on it; drag them out one at a time or all together.</li>
@@ -82,7 +105,7 @@ export default function Home() {
 
       <section id="formats" className="section formats-teaser">
         <div className="wrap">
-          <h2 className="section-title" data-split>The formats you actually use.</h2>
+          <h2 className="section-title" data-split>The formats <span className="soft">you actually use.</span></h2>
           <p className="lede">Pictures, video, audio, PDFs, documents, spreadsheets, slides and archives. The common ones are on the dial from the start; everything else is one switch away.</p>
         </div>
         <div className="strip" aria-hidden="true">
@@ -109,11 +132,8 @@ export default function Home() {
       <section className="section download" id="download">
         <div className="wrap split">
           <div>
-            <div className="app-mark" aria-hidden="true">
-              <span className="app-orbit" />
-              <img className="app-icon" src="/assets/icon-256.png" alt="" width={96} height={96} />
-            </div>
-            <h2 className="section-title" data-split>Free during early access.</h2>
+            <img className="app-icon" src="/assets/icon-256.png" alt="" width={96} height={96} />
+            <h2 className="section-title" data-split>Free during <span className="soft">early access.</span></h2>
             <p className="lede">For Macs with Apple silicon running macOS 14 Sonoma or later. Halodial keeps itself up to date. The one-line install skips the macOS approval step.</p>
             <div className="cta">
               <a className="btn" href={DMG}><DownloadIcon />Download .dmg</a>

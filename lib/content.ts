@@ -7,7 +7,7 @@ export const FEATURES: [icon: string, title: string, text: string][] = [
   ['maximize', 'Quality you choose', 'Set JPEG, HEIC, AVIF and WebP quality, video size and quality, and audio bitrate per format.'],
   ['sparkles', 'Recipes', 'Chain steps into one choice, like resize then WebP, and run it from the dial or the halodial command.'],
   ['keyboard', 'Your keys, your fingers', 'Record your own shortcuts and wheel keys, and open the launcher with three or four fingers.'],
-  ['palette', 'Glass or Solid', 'Two looks for the dial and the shelf, in any highlight colour. Try them above.'],
+  ['palette', 'Glass or Solid', 'Two looks for the dial and the shelf, in any highlight colour.'],
   ['repeat', 'Learns your habits', 'The options you pick most for each kind of file move to the front of the dial.'],
 ];
 
