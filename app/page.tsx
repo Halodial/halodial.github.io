@@ -3,6 +3,9 @@ import TryCard from '@/components/TryCard';
 import SectionHead from '@/components/SectionHead';
 import ProductCards from '@/components/ProductCards';
 import Bento from '@/components/Bento';
+import SlotTour from '@/components/SlotTour';
+import BeforeAfter from '@/components/BeforeAfter';
+import Keyboard from '@/components/Keyboard';
 import AppsDiagram from '@/components/AppsDiagram';
 import FileIcon from '@/components/FileIcon';
 import PrivateRing from '@/components/PrivateRing';
@@ -29,6 +32,13 @@ export default function Home() {
         <HeroDial />
       </section>
 
+      <section id="slots" className="section">
+        <div className="wrap">
+          <SectionHead title="One dial." soft="Four slots, every file." href="/try/" link="Try it" />
+          <SlotTour />
+        </div>
+      </section>
+
       <section id="ways" className="section">
         <div className="wrap">
           <SectionHead title="Three ways in." soft="No windows to open." href="/try/" link="Try them" />
@@ -49,9 +59,23 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="quality" className="section">
+        <div className="wrap">
+          <SectionHead title="See the difference." soft="Then pick the quality." href="/formats/" link="Every format" />
+          <BeforeAfter />
+        </div>
+      </section>
+
       <section id="apps" className="section">
         <div className="wrap">
           <AppsDiagram />
+        </div>
+      </section>
+
+      <section id="keys" className="section">
+        <div className="wrap">
+          <SectionHead title="A key for everything." soft="Change any of them." href="/help/" link="All shortcuts" />
+          <Keyboard />
         </div>
       </section>
 
@@ -77,6 +101,11 @@ export default function Home() {
         <div className="wrap">
           <SectionHead title="The formats" soft="you actually use." href="/formats/" link="Every format" />
           <p className="lede">Pictures, video, audio, PDFs, documents, spreadsheets, slides and archives. The common ones are on the dial from the start; everything else is one switch away.</p>
+          <div className="stats">
+            <div><b data-count data-to={ALL_FORMATS.length}>{ALL_FORMATS.length}</b><span>formats</span></div>
+            <div><b data-count data-to={8}>8</b><span>kinds of file</span></div>
+            <div><b data-count data-from={100} data-to={0}>0</b><span>uploads</span></div>
+          </div>
         </div>
         <div className="strip" aria-hidden="true">
           {[ALL_FORMATS.slice(0, half), ALL_FORMATS.slice(half)].map((row, i) => (

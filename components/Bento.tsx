@@ -35,7 +35,7 @@ const ART: Record<string, React.ReactNode> = {
     <div className="art-quality">
       <span className="q-row"><span>WebP quality</span><b>82</b></span>
       <span className="q-track"><span className="q-fill" /><span className="q-thumb" /></span>
-      <span className="q-size">≈ 410 KB, from 2.4 MB</span>
+      <span className="q-size">≈ <span data-count data-from="2400" data-to="410" data-unit="kb">410 KB</span>, from 2.4 MB</span>
     </div>
   ),
   'Your keys, your fingers': (

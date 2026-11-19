@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import PageHead from '@/components/PageHead';
+import Keyboard from '@/components/Keyboard';
 
 export const metadata: Metadata = { title: 'Help', description: 'Shortcuts, installing, permissions, updates and removing Halodial.' };
 
@@ -30,6 +31,7 @@ export default function Help() {
       <section className="section tight">
         <div className="wrap">
           <h2 className="sub-title" data-split>Shortcuts</h2>
+          <Keyboard />
           <dl className="keys" data-rise>
             {KEYS.map(([k, d], i) => <div key={i}><dt>{k}</dt><dd>{d}</dd></div>)}
           </dl>
