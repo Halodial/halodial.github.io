@@ -2,7 +2,7 @@ import HeroDial from '@/components/HeroDial';
 import TryCard from '@/components/TryCard';
 import SectionHead from '@/components/SectionHead';
 import ProductCards from '@/components/ProductCards';
-import DemoGrid from '@/components/DemoGrid';
+import Bento from '@/components/Bento';
 import AppsDiagram from '@/components/AppsDiagram';
 import FileIcon from '@/components/FileIcon';
 import PrivateRing from '@/components/PrivateRing';
@@ -45,7 +45,7 @@ export default function Home() {
       <section id="features" className="section">
         <div className="wrap">
           <SectionHead title="Small tools," soft="kept where your hands are." href="/try/" link="Full playground" />
-          <DemoGrid />
+          <Bento />
         </div>
       </section>
 
