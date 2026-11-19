@@ -53,9 +53,13 @@ kbd {
 .btn:hover { transform: translateY(-1px); background: #fff; }
 .btn.ghost { background: var(--raised); color: var(--ink); }
 .btn.ghost:hover { background: #2C2C2C; }
-/* near a big button the cursor is a blob (see Motion.tsx); the real cursor hides meanwhile */
-html.cursor-is-blob, html.cursor-is-blob * { cursor: none !important; }
-.blob { position: fixed; left: 0; top: 0; z-index: 100; pointer-events: none; background: #fff; mix-blend-mode: difference; will-change: transform, width, height; }
+/* big buttons take the cursor in like an amoeba (see Motion.tsx): the body and a drop sit in a goo layer behind the label */
+html.cursor-in-goo, html.cursor-in-goo * { cursor: none !important; }
+.goo-defs { position: absolute; width: 0; height: 0; }
+.btn.gooey, .btn.gooey:hover { position: relative; isolation: isolate; background: transparent; }
+.goo { position: absolute; inset: -80px; z-index: -1; pointer-events: none; filter: url(#goo); }
+.goo-body { position: absolute; inset: 80px; border-radius: 999px; }
+.goo-dot { position: absolute; left: 0; top: 0; border-radius: 50%; will-change: transform; }
 .btn.small { height: 36px; padding: 0 16px; font-size: 13.5px; }
 .cta { display: flex; flex-wrap: wrap; gap: 12px; }
 .hero .cta { justify-content: center; }

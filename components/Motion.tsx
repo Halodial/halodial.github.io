@@ -59,64 +59,71 @@ export default function Motion() {
       }
     });
 
-    // big buttons and a blob cursor, for a mouse or trackpad only. Near a big button the cursor turns into a blob
-    // that follows the pointer (stretching as it moves) and the button leans a few pixels towards it. Over the button
-    // the blob swells into the button's shape and melts onto it; leaving, it pulls back into a dot and shrinks away,
-    // and the normal cursor returns.
+    // big buttons take the cursor in like an amoeba, for a mouse or trackpad only. Near a big button the cursor turns
+    // into a drop of the button's own colour. A goo filter melts shapes of one colour together, so as the drop reaches
+    // the edge the button bulges out to meet it, they join, and the drop is swallowed; leaving, the button stretches
+    // after it until it pinches off, and the drop shrinks away and the cursor comes back. Colours never change and the
+    // label stays sharp (only the layer behind it is filtered). The button itself leans a few pixels at most.
     gsap.matchMedia().add('(pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
-      const REACH = 70, LEAN = 0.12, MAX = 8, DOT = 18;  // zone round a button (px), how far it leans, at most (px), blob size
+      const REACH = 70, PAD = 80, DOT = 22, LEAN = 0.08, MAX = 6;  // px: zone, layer overhang, drop size; lean share, max
       const root = document.documentElement;
-      const blob = document.createElement('div');
-      blob.className = 'blob';
-      document.body.appendChild(blob);
-      gsap.set(blob, { xPercent: -50, yPercent: -50, width: DOT, height: DOT, scale: 0, opacity: 0 });
-      const toX = gsap.quickTo(blob, 'x', { duration: 0.28, ease: 'power3.out' });
-      const toY = gsap.quickTo(blob, 'y', { duration: 0.28, ease: 'power3.out' });
-      let near: HTMLElement | null = null, inside = false, last = { x: 0, y: 0, t: 0 };
+      const defs = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      defs.setAttribute('class', 'goo-defs');
+      defs.innerHTML = '<filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="7" /><feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 22 -10" /></filter>';
+      document.body.appendChild(defs);
 
+      // each big button draws its body in a goo layer behind its label, with a drop that can join it
+      const parts = new Map<HTMLElement, { dot: HTMLElement; x: (v: number) => void; y: (v: number) => void }>();
+      document.querySelectorAll<HTMLElement>('.btn:not(.small)').forEach(b => {
+        const colour = getComputedStyle(b).backgroundColor;
+        const layer = document.createElement('span');
+        layer.className = 'goo';
+        layer.setAttribute('aria-hidden', 'true');
+        layer.innerHTML = `<span class="goo-body" style="background:${colour}"></span><span class="goo-dot" style="background:${colour}"></span>`;
+        b.prepend(layer);
+        b.classList.add('gooey');
+        const dot = layer.lastElementChild as HTMLElement;
+        gsap.set(dot, { width: DOT, height: DOT, xPercent: -50, yPercent: -50, scale: 0 });
+        parts.set(b, { dot, x: gsap.quickTo(dot, 'x', { duration: 0.18, ease: 'power2.out' }), y: gsap.quickTo(dot, 'y', { duration: 0.18, ease: 'power2.out' }) });
+      });
+
+      let near: HTMLElement | null = null;
       const leave = () => {
-        if (near) gsap.to(near, { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, .4)', overwrite: 'auto' });
-        near = null; inside = false;
-        root.classList.remove('cursor-is-blob');
-        gsap.to(blob, { scale: 0, opacity: 0, width: DOT, height: DOT, borderRadius: DOT, duration: 0.35, ease: 'power3.in', overwrite: 'auto' });
+        if (!near) return;
+        const p = parts.get(near)!;
+        gsap.to(p.dot, { scale: 0, duration: 0.3, ease: 'power2.in', overwrite: 'auto' });
+        gsap.to(near, { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, .4)', overwrite: 'auto' });
+        near = null;
+        root.classList.remove('cursor-in-goo');
       };
       const onMove = (e: PointerEvent) => {
-        let hit: HTMLElement | null = null, rest = { x: 0, y: 0, w: 0, h: 0 };
-        for (const b of document.querySelectorAll<HTMLElement>('.btn:not(.small)')) {
-          const r = b.getBoundingClientRect(), bx = gsap.getProperty(b, 'x') as number, by = gsap.getProperty(b, 'y') as number;
-          const cx = r.left + r.width / 2 - bx, cy = r.top + r.height / 2 - by;
-          if (Math.abs(e.clientX - cx) < r.width / 2 + REACH && Math.abs(e.clientY - cy) < r.height / 2 + REACH) { hit = b; rest = { x: cx, y: cy, w: r.width, h: r.height }; break; }
+        let hit: HTMLElement | null = null, dx = 0, dy = 0;
+        for (const b of parts.keys()) {
+          const r = b.getBoundingClientRect();
+          const cx = r.left + r.width / 2 - (gsap.getProperty(b, 'x') as number), cy = r.top + r.height / 2 - (gsap.getProperty(b, 'y') as number);
+          if (Math.abs(e.clientX - cx) < r.width / 2 + REACH && Math.abs(e.clientY - cy) < r.height / 2 + REACH) { hit = b; dx = e.clientX - cx; dy = e.clientY - cy; break; }
         }
-        if (!hit) { if (near) leave(); return; }
-        if (near && near !== hit) leave();
-        if (!near) { near = hit; root.classList.add('cursor-is-blob'); gsap.set(blob, { x: e.clientX, y: e.clientY }); }
-
-        // the button leans a little towards the pointer
-        const dx = e.clientX - rest.x, dy = e.clientY - rest.y;
-        gsap.to(hit, { x: gsap.utils.clamp(-MAX, MAX, dx * LEAN), y: gsap.utils.clamp(-MAX, MAX, dy * LEAN), duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
-
-        const over = Math.abs(dx) < rest.w / 2 && Math.abs(dy) < rest.h / 2;
-        if (over) {  // swell into the button and settle on it
+        if (hit !== near) leave();
+        if (!hit) return;
+        const p = parts.get(hit)!;
+        if (!near) {  // a drop appears where the cursor was
+          near = hit;
+          root.classList.add('cursor-in-goo');
           const r = hit.getBoundingClientRect();
-          inside = true;
-          toX(r.left + r.width / 2); toY(r.top + r.height / 2);
-          gsap.to(blob, { width: r.width + 10, height: r.height + 10, borderRadius: r.height, scale: 1, opacity: 1, rotation: 0, scaleX: 1, scaleY: 1, duration: 0.45, ease: 'elastic.out(1, .6)', overwrite: 'auto' });
-          return;
+          gsap.set(p.dot, { x: e.clientX - r.left + PAD, y: e.clientY - r.top + PAD });
+          gsap.to(p.dot, { scale: 1, duration: 0.35, ease: 'back.out(2)', overwrite: 'auto' });
         }
-        // outside it: a dot that follows the pointer, stretched along its movement
-        const t = performance.now(), vx = e.clientX - last.x, vy = e.clientY - last.y, dt = Math.max(16, t - last.t);
-        last = { x: e.clientX, y: e.clientY, t };
-        const speed = Math.min(1, Math.hypot(vx, vy) / dt / 2.5);
-        toX(e.clientX); toY(e.clientY);
-        gsap.to(blob, {
-          width: DOT, height: DOT, borderRadius: DOT, scale: 1, opacity: 1, rotation: Math.atan2(vy, vx) * 180 / Math.PI,
-          scaleX: 1 + speed * 0.6, scaleY: 1 - speed * 0.3, duration: inside ? 0.4 : 0.25, ease: 'power3.out', overwrite: 'auto',
-        });
-        inside = false;
+        gsap.to(hit, { x: gsap.utils.clamp(-MAX, MAX, dx * LEAN), y: gsap.utils.clamp(-MAX, MAX, dy * LEAN), duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
+        const r = hit.getBoundingClientRect();  // the drop lives in the button's layer, which moves with it
+        p.x(e.clientX - r.left + PAD); p.y(e.clientY - r.top + PAD);
       };
       addEventListener('pointermove', onMove);
       document.addEventListener('pointerleave', leave);
-      return () => { leave(); blob.remove(); removeEventListener('pointermove', onMove); document.removeEventListener('pointerleave', leave); };
+      return () => {
+        leave(); removeEventListener('pointermove', onMove); document.removeEventListener('pointerleave', leave);
+        parts.forEach((_, b) => { b.querySelector('.goo')?.remove(); b.classList.remove('gooey'); });
+        defs.remove();
+      };
     });
   });
   return null;
