@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "What's new", description: 'Every Hal
 
 // Newest first. Matches the release notes on GitHub (Halodial/releases).
 const RELEASE_LIST: [version: string, date: string, items: string[]][] = [
-  ['1.2.0', '20 November 2026', [
+  ['1.2.0', '21 November 2026', [
     'Capture: press ⇧⌘2, then drag an area, click a window or press Space for the whole screen. A magnifier shows the pixels and colour under the pointer; Tab copies the colour.',
     'The capture card: Copy, Save, Edit, Text (reads the words in the capture on your Mac) and Pin (floats it above everything). Drag it into any app.',
     'The editor: arrows, text, a ruler that snaps to edges, boxes, ovals, lines, pen, highlighter, numbered steps, blur, spotlight, a magnifier, and a backdrop with your own picture.',
