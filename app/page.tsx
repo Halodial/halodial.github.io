@@ -3,6 +3,7 @@ import TryCard from '@/components/TryCard';
 import SectionHead from '@/components/SectionHead';
 import ProductCards from '@/components/ProductCards';
 import EdgeSlide from '@/components/EdgeSlide';
+import CaptureShow from '@/components/CaptureShow';
 import Bento from '@/components/Bento';
 import SlotTour from '@/components/SlotTour';
 import BeforeAfter from '@/components/BeforeAfter';
@@ -51,6 +52,13 @@ export default function Home() {
         <div className="wrap">
           <SectionHead title="Slide the edges." soft="Volume and brightness, by feel." />
           <EdgeSlide />
+        </div>
+      </section>
+
+      <section id="capture" className="section">
+        <div className="wrap">
+          <SectionHead title="Capture anything." soft="Then point at what matters." />
+          <CaptureShow />
         </div>
       </section>
 

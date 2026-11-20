@@ -5,6 +5,7 @@ import Motion from '@/components/Motion';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import SiteDial from '@/components/SiteDial';
+import TryFloat from '@/components/TryFloat';
 import Search from '@/components/Search';
 import PageTransition, { ARRIVE_SCRIPT } from '@/components/PageTransition';
 import './globals.css';
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <Motion />
         <SiteDial />
+        <TryFloat />
         <Search />
         <PageTransition />
       </body>
