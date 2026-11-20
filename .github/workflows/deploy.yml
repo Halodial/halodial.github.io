@@ -1,4 +1,6 @@
 # Builds the site and publishes out/ to GitHub Pages on every push to main.
+# Two jobs, GitHub's documented shape: deploying in the same job right after the upload intermittently can't find
+# the artifact (actions/deploy-pages issue, Oct 2026); a separate deploy job only starts once the upload is final.
 name: Deploy
 on:
   push:
@@ -10,16 +12,20 @@ permissions:
   id-token: write
 concurrency: { group: pages, cancel-in-progress: true }
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment: { name: github-pages, url: '${{ steps.deployment.outputs.page_url }}' }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npx next build
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with: { path: out }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: '${{ steps.deployment.outputs.page_url }}' }
+    steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
