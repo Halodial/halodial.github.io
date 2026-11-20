@@ -6,6 +6,10 @@ export const metadata: Metadata = { title: "What's new", description: 'Every Hal
 
 // Newest first. Matches the release notes on GitHub (Halodial/releases).
 const RELEASE_LIST: [version: string, date: string, items: string[]][] = [
+  ['1.1.0', '20 November 2026', [
+    'Trackpad edges: hold Control and slide one finger up or down the right edge of the trackpad for volume, the left edge for brightness. The dial opens under your pointer and follows your finger.',
+    'Turn it on in Settings > Trackpad edges. Pick another key, or none, and which side is volume.',
+  ]],
   ['1.0.3', '20 November 2026', [
     'Fixed: the dial click sound going quiet when you connect earbuds, headphones or AirPlay, or switch the sound output.',
     'New icons across the dial: Mission Control, Desktop, Display Off, Night Shift, keyboard light, Dark Mode, Screenshot, AirDrop, earbuds and more.',

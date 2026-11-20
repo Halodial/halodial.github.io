@@ -2,6 +2,7 @@ import HeroDial from '@/components/HeroDial';
 import TryCard from '@/components/TryCard';
 import SectionHead from '@/components/SectionHead';
 import ProductCards from '@/components/ProductCards';
+import EdgeSlide from '@/components/EdgeSlide';
 import Bento from '@/components/Bento';
 import SlotTour from '@/components/SlotTour';
 import BeforeAfter from '@/components/BeforeAfter';
@@ -43,6 +44,13 @@ export default function Home() {
         <div className="wrap">
           <SectionHead title="Three ways in." soft="No windows to open." href="/try/" link="Try them" />
           <ProductCards />
+        </div>
+      </section>
+
+      <section id="edges" className="section">
+        <div className="wrap">
+          <SectionHead title="Slide the edges." soft="Volume and brightness, by feel." />
+          <EdgeSlide />
         </div>
       </section>
 

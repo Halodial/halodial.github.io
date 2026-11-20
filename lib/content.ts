@@ -53,6 +53,7 @@ export const SEARCH: Find[] = [
   { title: 'Hold ⌘ while dragging a file', hint: 'Shortcut', href: '/help/', words: 'command file dial' },
   { title: 'Shake a file to open a shelf', hint: 'Shortcut', href: '/help/', words: 'shelf park' },
   { title: 'Tap with four fingers for the launcher', hint: 'Shortcut', href: '/help/', words: 'launcher trackpad three' },
+  { title: 'Slide a trackpad edge for volume or brightness', hint: 'Feature', href: '/#edges', words: 'trackpad edge slide swipe volume brightness control' },
   { title: '⌥⌘Space opens the launcher', hint: 'Shortcut', href: '/help/', words: 'option command space' },
   { title: '⌥⌘C opens the dial for Finder’s selection', hint: 'Shortcut', href: '/help/', words: 'option command c finder' },
   { title: '⌥⌘S opens a new shelf', hint: 'Shortcut', href: '/help/', words: 'option command s' },
