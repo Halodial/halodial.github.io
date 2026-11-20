@@ -47,21 +47,7 @@ const ART: Record<string, React.ReactNode> = {
   'Glass or Solid': (
     <div className="art-looks">
       <Dial className="look solid" slots={FOUR} lit={1} name="Solid" sub="photo.jpg" />
-      <span className="glass-wall">
-        <svg className="wall-art" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <defs>
-            <linearGradient id="wall-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#2A2350" /><stop offset=".55" stopColor="#6E5FB0" /><stop offset="1" stopColor="#E9B8C9" /></linearGradient>
-            <radialGradient id="wall-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stopColor="#FFF3DC" /><stop offset=".45" stopColor="#FFD9A8" stopOpacity=".9" /><stop offset="1" stopColor="#FFD9A8" stopOpacity="0" /></radialGradient>
-          </defs>
-          <rect width="200" height="200" fill="url(#wall-sky)" />
-          <circle cx="132" cy="112" r="46" fill="url(#wall-sun)" />
-          <path d="M0 138 C 30 118, 52 120, 78 132 S 128 112, 160 124 S 190 128, 200 122 V200 H0Z" fill="#5B4F98" opacity=".85" />
-          <path d="M0 158 C 34 144, 66 150, 96 158 S 150 142, 200 152 V200 H0Z" fill="#3B6E8F" />
-          <path d="M0 176 C 40 166, 84 172, 120 178 S 176 168, 200 172 V200 H0Z" fill="#2E5A4A" />
-          <path d="M0 190 C 50 184, 110 188, 200 184 V200 H0Z" fill="#1E3B33" />
-        </svg>
-        <Dial className="look glass" slots={FOUR} lit={1} name="Glass" sub="photo.jpg" />
-      </span>
+      <Dial className="look glass" slots={FOUR} lit={1} name="Glass" sub="photo.jpg" />
       <span className="look-dots">{['#FFFFFF', '#FFD17D', '#C9B6FF', '#7FC8FF', '#8FE3A2', '#FF9ED8'].map(c => <i key={c} style={{ background: c }} />)}</span>
     </div>
   ),

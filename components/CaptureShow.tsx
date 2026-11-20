@@ -110,7 +110,7 @@ export default function CaptureShow() {
         .call(() => tool(3), [], 6.9)
         .to('.cap-ruler', { autoAlpha: 1, duration: 0.01 }, 6.9)
         .fromTo('.cap-ruler .cap-draw', { drawSVG: '50% 50%' }, { drawSVG: '0% 100%', duration: 0.55, ease: 'power2.out' }, 6.95)
-        .from('.cap-ruler .cap-label', { autoAlpha: 0, y: 6, duration: 0.3 }, 7.3)
+        .from('.cap-ruler .cap-label', { autoAlpha: 0, y: 4, duration: 0.3 }, 7.3)
         .call(() => tool(5), [], 7.8)
         .to('.cap-blur', { autoAlpha: 1, duration: 0.01 }, 7.8)
         .from('.cap-blur rect', { scale: 0, transformOrigin: '50% 50%', duration: 0.3, stagger: { each: 0.02, from: 'random' }, ease: 'back.out(2)' }, 7.85)
@@ -142,50 +142,97 @@ export default function CaptureShow() {
               <stop offset="0" stopColor="#C9B6FF" /><stop offset=".5" stopColor="#7FC8FF" /><stop offset="1" stopColor="#8FE3A2" />
             </linearGradient>
             <clipPath id="cap-clip"><rect x={SEL.x} y={SEL.y} width={SEL.w} height={SEL.h} rx="6" /></clipPath>
+            <linearGradient id="d-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#C9B6FF" stopOpacity=".32" /><stop offset="1" stopColor="#C9B6FF" stopOpacity="0" /></linearGradient>
+            <linearGradient id="d-spark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#7FC8FF" stopOpacity=".3" /><stop offset="1" stopColor="#7FC8FF" stopOpacity="0" /></linearGradient>
+            <clipPath id="cap-thumb-clip"><rect x="14" y="14" width="222" height="138" rx="10" /></clipPath>
             <clipPath id="cap-lens-clip"><circle cx="512" cy="292" r="44" /></clipPath>
             <filter id="cap-shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="14" stdDeviation="16" floodOpacity=".5" /></filter>
           </defs>
 
           <g className="cap-stage">
             <rect className="cap-backdrop" x={SEL.x - 34} y={SEL.y - 26} width={SEL.w + 68} height={SEL.h + 52} rx="18" fill="url(#cap-bd)" />
-            {/* the "screen": a window with a little dashboard in it */}
-            <g className="cap-shot" filter="url(#cap-shadow)">
-              <rect x="150" y="54" width="480" height="340" rx="14" fill="#1C1C1C" stroke="rgba(255,255,255,.08)" />
-              <circle cx="172" cy="74" r="5" fill="#FF5F57" /><circle cx="189" cy="74" r="5" fill="#FEBC2E" /><circle cx="206" cy="74" r="5" fill="#28C840" />
-              <rect x="166" y="98" width="52" height="280" rx="8" fill="#232323" />
-              {[0, 1, 2, 3, 4].map(i => <rect key={i} x="176" y={112 + i * 26} width={i === 1 ? 32 : 28} height="8" rx="4" fill={i === 1 ? '#7FC8FF' : '#3A3A3A'} />)}
-              <rect x="236" y="98" width="380" height="280" rx="8" fill="#161616" />
-              <rect x="252" y="128" width="150" height="12" rx="6" fill="#F6F3EE" opacity=".85" />
-              <rect x="252" y="148" width="96" height="8" rx="4" fill="#6B6B6B" />
-              <rect x="430" y="126" width="168" height="40" rx="9" fill="#232323" />
-              <rect x="442" y="138" width="70" height="7" rx="3.5" fill="#A1A1A1" />
-              <rect x="442" y="151" width="110" height="7" rx="3.5" fill="#6B6B6B" />
-              {[64, 92, 54, 120, 100, 140, 82].map((h, i) => <rect key={i} x={262 + i * 34} y={322 - h} width="20" height={h} rx="5" fill={i === 5 ? '#C9B6FF' : i % 2 ? '#7FC8FF' : '#3A4A5A'} />)}
-              <rect x="252" y="332" width="346" height="1.5" fill="#2E2E2E" />
-              <rect x="252" y="344" width="180" height="8" rx="4" fill="#6B6B6B" />
-              <rect x="252" y="358" width="120" height="8" rx="4" fill="#4A4A4A" />
-            </g>
+            {/* the "screen": a real-looking dashboard in a browser window (a made-up app, Orbit) */}
+            <g className="cap-shot" filter="url(#cap-shadow)"><g id="cap-dash">
+              <rect x="150" y="54" width="480" height="340" rx="14" fill="#141416" stroke="rgba(255,255,255,.09)" />
+              <path d="M150 82V68a14 14 0 0 1 14-14h452a14 14 0 0 1 14 14v14Z" fill="#1B1B1E" />
+              <circle cx="166" cy="68" r="4.5" fill="#FF5F57" /><circle cx="180" cy="68" r="4.5" fill="#FEBC2E" /><circle cx="194" cy="68" r="4.5" fill="#28C840" />
+              <path className="d-ic" d="M214 63h12v10h-12ZM218 63v10M240 64l-4 4 4 4M250 64l4 4-4 4" />
+              <rect x="300" y="61" width="250" height="14" rx="7" fill="#232327" />
+              <path className="d-ic" d="M392 66.5h4v5h-4ZM393 66.5v-1.2a1 1 0 0 1 2 0v1.2" />
+              <text x="400" y="71.3" className="d-t d-url">orbit.app/overview</text>
+              <rect x="150" y="82" width="480" height="1" fill="rgba(255,255,255,.06)" />
+              {/* sidebar */}
+              <rect x="150" y="83" width="88" height="311" fill="#18181B" />
+              <rect x="160" y="94" width="16" height="16" rx="5" fill="url(#cap-bd)" />
+              <circle cx="168" cy="102" r="4" fill="none" stroke="#141416" strokeWidth="1.6" />
+              <text x="181" y="106" className="d-t d-brand">Orbit</text>
+              <rect x="158" y="120" width="72" height="16" rx="5" fill="#222226" stroke="rgba(255,255,255,.06)" />
+              <circle cx="166" cy="128" r="2.6" className="d-ic" /><path className="d-ic" d="M168 130l1.6 1.6" />
+              <text x="173" y="130.8" className="d-t d-dim">Search…</text>
+              <rect x="219" y="123" width="8" height="10" rx="2" fill="#2E2E33" /><text x="223" y="130.6" className="d-t d-key" textAnchor="middle">/</text>
+              {[['Overview', 'M0 0h3v3H0ZM5 0h3v3H5ZM0 5h3v3H0ZM5 5h3v3H5Z'], ['Files', 'M0 1.5h3l1 1h4v5H0Z'], ['Shelves', 'M0 2h8M0 5h8M0 8h8'], ['Reports', 'M1 8V4M4 8V1M7 8V5']].map(([t, d], i) => (
+                <g key={t} transform={`translate(158 ${146 + i * 20})`}>
+                  {i === 0 && <><rect width="72" height="16" rx="5" fill="#26262B" /><rect x="0" y="3" width="2" height="10" rx="1" fill="#C9B6FF" /></>}
+                  <path d={d} transform="translate(7 4)" className={i === 0 ? 'd-ic on' : 'd-ic'} />
+                  <text x="20" y="11" className={i === 0 ? 'd-t d-nav on' : 'd-t d-nav'}>{t}</text>
+                </g>
+              ))}
+              {/* header */}
+              <text x="250" y="105" className="d-t d-h">Overview</text>
+              <rect x="560" y="94" width="58" height="15" rx="5" fill="#222226" stroke="rgba(255,255,255,.06)" />
+              <text x="567" y="104.6" className="d-t d-dim">30 days</text><path className="d-ic" d="M606 100l2.5 2.5 2.5-2.5" />
+              {/* card: files converted, a segmented meter */}
+              <rect x="248" y="118" width="178" height="80" rx="10" fill="#1B1B1F" stroke="rgba(255,255,255,.06)" />
+              <text x="258" y="133" className="d-t d-label">Files converted</text>
+              <text x="258" y="156" className="d-t d-num">1,284</text>
+              {Array.from({ length: 30 }, (_, i) => <rect key={i} x={258 + i * 5.3} y="163" width="3.2" height="12" rx="1.6" fill={i < 19 ? '#8FE3A2' : i < 25 ? '#7FC8FF' : '#33333A'} opacity={i < 19 ? 0.55 + i / 45 : 1} />)}
+              <text x="258" y="189" className="d-t d-dim">Shared with</text>
+              <text x="296" y="189" className="d-t d-mail">ana@orbit.app</text>
+              {/* card: time saved, a sparkline */}
+              <rect x="438" y="118" width="180" height="80" rx="10" fill="#1B1B1F" stroke="rgba(255,255,255,.06)" />
+              <text x="448" y="133" className="d-t d-label">Time saved</text>
+              <text x="448" y="156" className="d-t d-num">24 hr 32 min</text>
+              <path d="M448 186 L466 180 L480 182 L494 176 L510 178 L524 171 L540 174 L556 169 L572 172 L590 164 L606 167 V190 H448Z" fill="url(#d-spark)" />
+              <path d="M448 186 L466 180 L480 182 L494 176 L510 178 L524 171 L540 174 L556 169 L572 172 L590 164 L606 167" fill="none" stroke="#7FC8FF" strokeWidth="1.4" strokeLinejoin="round" />
+              {/* card: conversions over the year, with a tooltip */}
+              <rect x="248" y="206" width="370" height="180" rx="10" fill="#1B1B1F" stroke="rgba(255,255,255,.06)" />
+              <text x="258" y="222" className="d-t d-label">Conversions</text>
+              <rect x="580" y="212" width="30" height="14" rx="4.5" fill="#222226" stroke="rgba(255,255,255,.06)" /><text x="586" y="222" className="d-t d-dim">2026</text>
+              {[248, 278, 308].map(y => <rect key={y} x="272" y={y} width="336" height="0.8" fill="rgba(255,255,255,.05)" />)}
+              <path d="M272 330 L290 322 L308 326 L326 304 L344 292 L362 296 L380 278 L398 284 L416 266 L434 272 L452 258 L470 262 L488 274 L506 268 L524 286 L542 278 L560 290 L578 284 L596 300 L608 296 V338 H272Z" fill="url(#d-area)" />
+              <path className="d-line" d="M272 330 L290 322 L308 326 L326 304 L344 292 L362 296 L380 278 L398 284 L416 266 L434 272 L452 258 L470 262 L488 274 L506 268 L524 286 L542 278 L560 290 L578 284 L596 300 L608 296" />
+              <rect x="452" y="248" width="0.8" height="90" fill="rgba(255,255,255,.2)" />
+              <circle cx="452" cy="258" r="4" fill="#C9B6FF" stroke="#1B1B1F" strokeWidth="2" />
+              <g transform="translate(460 232)">
+                <rect width="58" height="28" rx="6" fill="#26262B" stroke="rgba(255,255,255,.1)" />
+                <text x="7" y="11" className="d-t d-dim">May 2026</text>
+                <circle cx="10" cy="20" r="2.6" fill="#C9B6FF" /><text x="16" y="22.6" className="d-t d-tip">412 files</text>
+              </g>
+              {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'].map((m, i) => <text key={m} x={276 + i * 54} y="352" className="d-t d-axis">{m}</text>)}
+              <text x="258" y="372" className="d-t d-dim">Most used: WebP · PNG · HEIC</text>
+            </g></g>
 
             {/* marks, drawn in the editor (they may reach past the capture, like the app's growing canvas) */}
             <g className="cap-mark cap-arrow">
-              <path className="cap-draw" d="M 488 150 C 470 190, 452 200, 420 214" stroke="#FF453A" strokeWidth="5" fill="none" strokeLinecap="round" />
-              <path className="cap-head" d="M 404 220 L 424 204 L 428 224 Z" fill="#FF453A" />
+              <path className="cap-draw" d="M 548 170 C 540 205, 520 222, 492 236" stroke="#FF453A" strokeWidth="4.5" fill="none" strokeLinecap="round" />
+              <path className="cap-head" d="M 478 243 L 494 226 L 500 244 Z" fill="#FF453A" />
             </g>
             <g className="cap-mark cap-ruler">
-              <path className="cap-draw" d="M 262 284 H 296 M 262 278 V 290 M 296 278 V 290" stroke="#FF453A" strokeWidth="2" fill="none" />
-              <g className="cap-label"><rect x="300" y="276" width="44" height="16" rx="4" fill="#FF453A" /><text x="322" y="288" textAnchor="middle" className="cap-t">14 pt</text></g>
+              <path className="cap-draw" d="M 426 140 H 438 M 426 134 V 146 M 438 134 V 146" stroke="#FF453A" strokeWidth="1.8" fill="none" />
+              <g className="cap-label"><rect x="414" y="104" width="36" height="15" rx="4" fill="#FF453A" /><text x="432" y="115" textAnchor="middle" className="cap-t">12 pt</text></g>
             </g>
             <g className="cap-mark cap-blur">
-              {Array.from({ length: 18 }, (_, i) => <rect key={i} x={252 + (i % 9) * 11} y={126 + Math.floor(i / 9) * 8} width="11" height="8" fill={['#9A9A9A', '#C8C8C8', '#7A7A7A', '#B0B0B0'][(i * 7) % 4]} />)}
+              {Array.from({ length: 22 }, (_, i) => <rect key={i} x={295 + (i % 11) * 5.4} y={182 + Math.floor(i / 11) * 5} width="5.4" height="5" fill={['#5A5A62', '#7A7A84', '#46464E', '#8A8A94'][(i * 7) % 4]} />)}
             </g>
             <g className="cap-mark cap-mag">
-              <circle className="cap-spot" cx="465" cy="218" r="12" fill="none" stroke="#FF453A" strokeWidth="2" />
-              <path className="cap-draw" d="M 475 225 L 540 260 M 455 228 L 480 300" stroke="#FF453A" strokeWidth="1.6" fill="none" />
+              <circle className="cap-spot" cx="452" cy="258" r="11" fill="none" stroke="#FF453A" strokeWidth="1.8" />
+              <path className="cap-draw" d="M 446 268 L 508 312 M 462 260 L 542 270" stroke="#FF453A" strokeWidth="1.4" fill="none" />
               <g className="cap-lens">
                 <g clipPath="url(#cap-lens-clip)">
-                  <rect x="468" y="248" width="88" height="88" fill="#161616" />
-                  <rect x="470" y="262" width="34" height="74" rx="9" fill="#C9B6FF" />
-                  <rect x="520" y="300" width="34" height="40" rx="9" fill="#7FC8FF" />
+                  <rect x="468" y="248" width="88" height="88" fill="#1B1B1F" />
+                  <path d="M470 330 L496 298 L512 304 L534 284 L560 296" fill="none" stroke="#C9B6FF" strokeWidth="5" strokeLinejoin="round" />
+                  <rect x="512" y="250" width="2.4" height="90" fill="rgba(255,255,255,.25)" />
+                  <circle cx="513" cy="300" r="9" fill="#C9B6FF" stroke="#1B1B1F" strokeWidth="4" />
                 </g>
                 <circle cx="512" cy="292" r="44" fill="none" stroke="#FF453A" strokeWidth="2.5" />
               </g>
@@ -210,8 +257,12 @@ export default function CaptureShow() {
           <g transform="translate(664 168)"><g className="cap-card">
             <rect width="250" height="240" rx="18" fill="rgba(30,30,30,.92)" stroke="rgba(255,255,255,.1)" />
             <rect x="14" y="14" width="222" height="138" rx="10" fill="#161616" />
-            {[40, 60, 34, 74, 58, 86].map((h, i) => <rect key={i} x={36 + i * 32} y={138 - h} width="18" height={h} rx="4" fill={i === 5 ? '#C9B6FF' : i % 2 ? '#7FC8FF' : '#3A4A5A'} />)}
-            <text x="16" y="174" className="cap-t dim">340 × 214 pt · Safari</text>
+            {/* the captured area itself, scaled into the preview */}
+            <g clipPath="url(#cap-thumb-clip)">
+              <use href="#cap-dash" transform={`translate(${14 - SEL.x * 0.653} ${14 + (138 - SEL.h * 0.653) / 2 - SEL.y * 0.653}) scale(.653)`} />
+            </g>
+            <rect x="14" y="14" width="222" height="138" rx="10" fill="none" stroke="rgba(255,255,255,.1)" />
+            <text x="16" y="174" className="cap-t dim">340 × 214 pt · Orbit</text>
             {['Copy', 'Save', 'Edit', 'Text', 'Pin'].map((t, i) => (
               <g key={t} transform={`translate(${14 + i * 45} 186)`}>
                 <rect className="cap-btn" width="41" height="40" rx="9" fill="rgba(255,255,255,.07)" />
