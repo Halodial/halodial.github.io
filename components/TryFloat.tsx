@@ -20,7 +20,7 @@ export default function TryFloat() {
   return (
     <a href="/try/" className={`try-float${shown ? ' on' : ''}`} aria-hidden={!shown} tabIndex={shown ? 0 : -1}>
       <span className="try-float-ring" aria-hidden="true" />
-      <span className="try-float-play"><Icon name="play" size={14} stroke={2} /></span>
+      <span className="try-float-play"><Icon name="play" size={12} stroke={2.2} /></span>
       <span className="try-float-text"><b>Try it</b><small>in your browser</small></span>
     </a>
   );

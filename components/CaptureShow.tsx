@@ -10,6 +10,21 @@ gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin, useGSAP);
 // the area that gets captured, in the scene's coordinates
 const SEL = { x: 230, y: 118, w: 340, h: 214 };
 const STEPS = ['Select', 'Card', 'Mark up', 'Backdrop'];
+// toolbar icons on a 24 grid (drawn at 18 px), in the app's order
+const ACTIONS = [
+  'M8 8V5.5A1.5 1.5 0 0 1 9.5 4h9A1.5 1.5 0 0 1 20 5.5v9a1.5 1.5 0 0 1-1.5 1.5H16M5.5 8h9A1.5 1.5 0 0 1 16 9.5v9a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 4 18.5v-9A1.5 1.5 0 0 1 5.5 8Z', // copy
+  'M12 4v10m0 0-4-4m4 4 4-4M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15',                                          // save
+  'M14.5 4.5 19.5 9.5M15 5l-5 4.5-3 .5 7 7 .5-3L19 9M10.5 13.5 5 19',                                                           // pin
+];
+const TOOLS = [
+  'M6 4.5 18 11l-5.2 1.6L10.5 18Z',                                    // select
+  'M6 18 18 6M10 6h8v8',                                                // arrow
+  'M6 6.5h12M12 6.5V18M9.5 18h5',                                       // text
+  'M3.5 9.5h17v6h-17ZM7.5 9.5v3M11.5 9.5v4M15.5 9.5v3',                 // ruler
+  'M5.5 6.5h13a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z', // rectangle
+  'M12 4.5c-3.2 4-5 6.4-5 8.9a5 5 0 0 0 10 0c0-2.5-1.8-4.9-5-8.9Z',     // blur
+  'M10.5 4.5a6 6 0 1 1 0 12 6 6 0 0 1 0-12ZM15 15l4.5 4.5M10.5 8v5M8 10.5h5', // magnifier
+];
 
 /** Capture, played out: the screen freezes, a crosshair drags out an area with the magnifier beside it, the
  *  capture card pops in, Edit opens the editor, and an arrow, a ruler, a blur and a magnifier go on before the
@@ -86,20 +101,20 @@ export default function CaptureShow() {
         .set('.cap-shot', { attr: { 'clip-path': 'url(#cap-clip)' } }, 5.05)
         .to('.cap-stage', { x: 80, y: 18, scale: 1.18, duration: 0.8, ease: 'expo.inOut' }, 5.05)
         .fromTo('.cap-tools', { y: -8 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 5.5)
-        .call(() => step(2), [], 5.6)
+        .call(() => { step(2); tool(0); }, [], 5.6)
         // 5. the marks, one tool at a time
-        .call(() => tool(0), [], 5.9)
+        .call(() => tool(1), [], 5.9)
         .to('.cap-arrow', { autoAlpha: 1, duration: 0.01 }, 5.9)
         .fromTo('.cap-arrow .cap-draw', { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.6, ease: 'power2.inOut' }, 5.95)
         .from('.cap-arrow .cap-head', { scale: 0, transformOrigin: '50% 50%', duration: 0.35, ease: 'back.out(3)' }, 6.45)
-        .call(() => tool(1), [], 6.9)
+        .call(() => tool(3), [], 6.9)
         .to('.cap-ruler', { autoAlpha: 1, duration: 0.01 }, 6.9)
         .fromTo('.cap-ruler .cap-draw', { drawSVG: '50% 50%' }, { drawSVG: '0% 100%', duration: 0.55, ease: 'power2.out' }, 6.95)
         .from('.cap-ruler .cap-label', { autoAlpha: 0, y: 6, duration: 0.3 }, 7.3)
-        .call(() => tool(2), [], 7.8)
+        .call(() => tool(5), [], 7.8)
         .to('.cap-blur', { autoAlpha: 1, duration: 0.01 }, 7.8)
         .from('.cap-blur rect', { scale: 0, transformOrigin: '50% 50%', duration: 0.3, stagger: { each: 0.02, from: 'random' }, ease: 'back.out(2)' }, 7.85)
-        .call(() => tool(3), [], 8.6)
+        .call(() => tool(6), [], 8.6)
         .to('.cap-mag', { autoAlpha: 1, duration: 0.01 }, 8.6)
         .from('.cap-mag .cap-spot', { scale: 0, transformOrigin: '50% 50%', duration: 0.3 }, 8.65)
         .fromTo('.cap-mag .cap-draw', { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.4 }, 8.85)
@@ -205,20 +220,24 @@ export default function CaptureShow() {
             ))}
           </g></g>
 
-          {/* the editor's toolbar */}
-          <g transform="translate(372 14)"><g className="cap-tools">
-            <rect width="216" height="38" rx="19" fill="rgba(30,30,30,.92)" stroke="rgba(255,255,255,.1)" />
-            {[
-              'M8 16 L20 8 M14 7 H20 V13',                      // arrow
-              'M5 15 H21 M8 12 V15 M12 13 V15 M16 12 V15 M20 13 V15', // ruler
-              'M13 5 C9 10 7 12.5 7 15 a6 6 0 0 0 12 0 C19 12.5 17 10 13 5 Z', // blur drop
-              'M11 15 a5 5 0 1 0 0.01 0 M15 19 L20 24',         // magnifier
-            ].map((d, i) => (
-              <g key={i} className="cap-tool" transform={`translate(${14 + i * 50} 2)`}>
-                <rect width="38" height="34" rx="10" />
-                <path d={d} transform="translate(6 2)" />
+          {/* the editor's toolbar, as in the app: actions | tools | colour */}
+          <g transform="translate(277 10)"><g className="cap-tools">
+            <rect width="406" height="44" rx="14" fill="rgba(28,28,30,.94)" stroke="rgba(255,255,255,.1)" />
+            <rect x="1" y="1" width="404" height="21" rx="13" fill="rgba(255,255,255,.035)" />
+            {ACTIONS.map((d, i) => (
+              <g key={i} className="cap-act" transform={`translate(${8 + i * 32} 7)`}>
+                <path d={d} transform="translate(6 6) scale(.75)" />
               </g>
             ))}
+            <rect x="110" y="13" width="1" height="18" fill="rgba(255,255,255,.12)" />
+            {TOOLS.map((d, i) => (
+              <g key={i} className="cap-tool" transform={`translate(${120 + i * 33} 7)`}>
+                <rect width="30" height="30" rx="8" />
+                <path d={d} transform="translate(6 6) scale(.75)" />
+              </g>
+            ))}
+            <rect x="358" y="13" width="1" height="18" fill="rgba(255,255,255,.12)" />
+            <circle cx="381" cy="22" r="8" fill="#FF453A" stroke="rgba(255,255,255,.85)" strokeWidth="1.5" />
           </g></g>
         </svg>
       </div>

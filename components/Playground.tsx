@@ -19,7 +19,7 @@ export default function Playground() {
   const [kind, setKind] = useState('launcher');
   const [style, setStyle] = useState('solid');
   const [accent, setAccent] = useState('#FFFFFF');
-  const [sound, setSound] = useState(true);
+  const [sound, setSound] = useState(false);  // audible right now: on, and the browser has let audio start
   const [toast, setToast] = useState<{ text: string; undo?: string; n: number } | null>(null);
 
   useEffect(() => {
@@ -31,9 +31,15 @@ export default function Playground() {
     const d: DialApi = new Dial(canvas.current, { onToast: show, live: live.current, onKind: setKind });
     dial.current = d;
     // browsers only allow sound after a click or key press; the first one anywhere on the page unlocks it
-    const wake = () => Sound.init();
-    addEventListener('pointerdown', wake, { once: true });
-    addEventListener('keydown', wake, { once: true });
+    // (not for the sound button: its own click decides, or a first click there would unlock and then mute)
+    const wake = (e: Event) => {
+      if ((e.target as Element | null)?.closest?.('.sound')) return;
+      Sound.init();
+      setSound(Sound.on && !!Sound.ctx);
+      removeEventListener('pointerdown', wake); removeEventListener('keydown', wake);
+    };
+    addEventListener('pointerdown', wake);
+    addEventListener('keydown', wake);
     return () => {
       clearTimeout(hideTimer.current); d.destroy();
       removeEventListener('pointerdown', wake); removeEventListener('keydown', wake);
@@ -44,9 +50,11 @@ export default function Playground() {
   const look = (s: string) => { setStyle(s); if (dial.current) { dial.current.style = s; dial.current.dirty = true; } };
   const tint = (hex: string) => { setAccent(hex); if (dial.current) { dial.current.accent = hex; dial.current.dirty = true; } };
   const toggleSound = () => {
+    // before audio is unlocked it was silent, so the first press means "on"
+    const audible = Sound.on && !!Sound.ctx;
     Sound.init();
-    Sound.on = !Sound.on;
-    setSound(Sound.on);
+    Sound.on = !audible;
+    setSound(Sound.on && !!Sound.ctx);
     if (Sound.on) Sound.play('click');
   };
 
@@ -81,9 +89,10 @@ export default function Playground() {
         </div>
         <button className="sound" type="button" aria-pressed={sound} onClick={toggleSound}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" />{sound && <path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" />}
+            <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" />
+            {sound ? <path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" /> : <path d="M15.5 9.5l5 5M20.5 9.5l-5 5" />}
           </svg>
-          {sound ? 'Sound on' : 'Sound off'}
+          {sound ? 'Sound on' : 'Sound off'}<span className="sr">{sound ? ', click to mute' : ', click to hear the dial'}</span>
         </button>
       </div>
       <p className="play-help" id="play-help">Hover a slot to hear the click, click to choose, or rest on one with options to open it. Click the centre to go back. Nothing here touches your files.</p>
