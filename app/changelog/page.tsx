@@ -11,6 +11,7 @@ const RELEASE_LIST: [version: string, date: string, items: string[]][] = [
     'The capture card: Copy, Save, Edit, Text (reads the words in the capture on your Mac) and Pin (floats it above everything). Drag it into any app.',
     'The editor: arrows, text, a ruler that snaps to edges, boxes, ovals, lines, pen, highlighter, numbered steps, blur, spotlight, a magnifier, and a backdrop with your own picture.',
     'Settings > Capture: save folder, sorting by month or app, PNG or JPEG, what happens after a capture, and the editor\'s first tool and colour.',
+    'Capture meets the dial: hold ⌘ on the capture card to convert, compress or share it with the file dial. The launcher\'s Capture ring has Area, Screen, In 3 Seconds, Text Only and Last Capture. Hold ⌥ and tap with three fingers to capture.',
     'If another app already uses a Halodial shortcut, Halodial now says so and offers a free one.',
   ]],
   ['1.1.0', '20 November 2026', [
